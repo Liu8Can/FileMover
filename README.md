@@ -76,7 +76,7 @@
 如有任何问题或建议，请联系：
 - **作者**: Liu8Can
 - **GitHub**: [Liu8Can](https://github.com/Liu8Can)
-- **邮箱**: [你的邮箱地址]
+- **邮箱**: liuan012342gmail.com
 
 ---
 
