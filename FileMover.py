@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 import hashlib
 from datetime import datetime
@@ -45,6 +46,7 @@ def process_files_recursive(source_folder, target_folder, file_extensions, opera
 
     # 如果没有找到文件，直接返回
     if not all_files:
+        start_button.config(state="normal")  # 重新启用按钮 (在多线程中无法直接操作 Tkinter 控件)
         messagebox.showinfo("提示", "源路径下没有找到指定类型的文件。")
         return
 
@@ -225,20 +227,30 @@ def log_callback(message):
 def show_about():
     about_message = """
     FileMover
-    版本: 1.0
+    版本: 1.0.0
     作者: 沧浪之水
     邮箱: liucan01234@gmail.com
     GitHub: https://github.com/Liu8Can
     """
     messagebox.showinfo("关于", about_message)
 
-
+def resource_path(relative_path):
+    """获取打包后的资源文件的绝对路径"""
+    try:
+        base_path = sys._MEIPASS  # PyInstaller 打包后的临时文件夹
+    except AttributeError:
+        base_path = os.path.abspath(".")  # 开发环境中的当前文件夹
+    return os.path.join(base_path, relative_path)
 
 # 创建主窗口
 root = tk.Tk()
-root.title("文件操作工具")
+root.title("FileMover v1.0")
 root.geometry("800x680")  # 调整窗口大小
 root.configure(bg=BG_COLOR)
+
+# 设置窗口图标
+icon_path = resource_path("icon.ico")  # 获取图标文件的路径
+root.iconbitmap(icon_path)  # 设置窗口图标
 
 # 设置窗口居中
 window_width = 800
@@ -248,11 +260,6 @@ screen_height = root.winfo_screenheight()
 x = (screen_width // 2) - (window_width // 2)
 y = (screen_height // 2) - (window_height // 2)
 root.geometry(f"{window_width}x{window_height}+{x}+{y}")
-
-# 设置图标
-icon_path = "icon.ico"  # 替换为你的图标路径
-if os.path.exists(icon_path):
-    root.iconbitmap(icon_path)
 
 # 创建变量
 source_folder_var = tk.StringVar()
